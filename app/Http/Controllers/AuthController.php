@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tasks;
 use App\Models\User;
-use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
@@ -125,11 +123,5 @@ class AuthController extends Controller
         $user = JWTAuth::authenticate($request->token);
 
         return response()->json(['user' => $user]);
-    }
-
-    public function indexTasks()
-    {
-        $tasks = Tasks::where('user_id', Auth::id())->paginate(5);
-        return view('tasks.index', compact('tasks'));
     }
 }

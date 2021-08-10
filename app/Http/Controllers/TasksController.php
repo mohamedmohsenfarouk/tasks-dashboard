@@ -5,28 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Tasks;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\Response;
 
 class TasksController extends Controller
 {
     protected $user;
 
-    public function __construct()
-    {
-    }
-
     public function index()
     {
-        $tasks = Tasks::all();
+        $tasks = Tasks::where('user_id', Auth::id())->paginate(5);
         return view('tasks.index', compact('tasks'));
-    }
-
-    public function all()
-    {
-        return $this->user
-            ->tasks()
-            ->paginate(5);
     }
 
     public function create()
@@ -45,38 +34,17 @@ class TasksController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
+            return Redirect::to('new_task')->withErrors($validator);
         }
 
         //Request is valid, create new task
         $task = Tasks::create([
             'title' => $request->title,
             'subject' => $request->subject,
-            'user_id' => isset($request->user_id) ? $request->user_id : Auth::id(),
+            'user_id' => Auth::id(),
         ]);
 
         return redirect('/tasks')->with('success', 'Task saved!');
-
-        //task created, return success response
-        //     return response()->json([
-        //         'success' => true,
-        //         'message' => 'Task created successfully',
-        //         'data' => $task,
-        //     ], Response::HTTP_OK);
-    }
-
-    public function show($id)
-    {
-        $task = Tasks::find($id);
-
-        if (!$task) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Sorry, task not found.',
-            ], 400);
-        }
-
-        return $task;
     }
 
     public function edit($id)
@@ -96,23 +64,17 @@ class TasksController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
+            return Redirect::to('edit_task/' . $task->id)->withErrors($validator);
         }
 
         //Request is valid, update task
         $task = $task->update([
             'title' => $request->title,
             'subject' => $request->subject,
-            'user_id' => isset($request->user_id) ? $request->user_id : Auth::id(),
+            'user_id' => Auth::id(),
         ]);
 
         //Task updated, return success response
-        // return response()->json([
-        //     'success' => true,
-        //     'message' => 'Task updated successfully',
-        //     'data' => $task,
-        // ], Response::HTTP_OK);
-
         return redirect('/tasks')->with('success', 'Task updated!');
 
     }
@@ -120,14 +82,7 @@ class TasksController extends Controller
     public function destroy(Tasks $task)
     {
         $task->delete();
-
-        // return response()->json([
-        //     'success' => true,
-        //     'message' => 'Task deleted successfully',
-        // ], Response::HTTP_OK);
-
         return redirect('/tasks')->with('success', 'Task deleted!');
-
     }
 
 }

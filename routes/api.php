@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TasksController;
+use App\Http\Controllers\TasksApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
-// Route::group(['middleware' => ['jwt.verify']], function () {
-// Route::get('logout', [AuthController::class, 'logout']);
-Route::get('get_user', [AuthController::class, 'get_user']);
-Route::get('tasks/all', [TasksController::class, 'all']);
-Route::get('tasks/{id}', [TasksController::class, 'show']);
-Route::post('create', [TasksController::class, 'store']);
-Route::post('update/{task}', [TasksController::class, 'update']);
-Route::delete('delete/{task}', [TasksController::class, 'destroy']);
-// });
+Route::group(['middleware' => ['jwt.verify']], function () {
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('get_user', [AuthController::class, 'get_user']);
+    Route::get('tasks', [TasksApiController::class, 'index']);
+    Route::get('tasks/{id}', [TasksApiController::class, 'show']);
+    Route::post('create', [TasksApiController::class, 'store']);
+    Route::post('update/{task}', [TasksApiController::class, 'update']);
+    Route::delete('delete/{task}', [TasksApiController::class, 'destroy']);
+});

@@ -9,7 +9,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="row">
+                <div class="row p-3">
                     <div class="col-sm-12">
                         <h1 class="display-3">Tasks</h1>
                         <div>
@@ -50,9 +50,9 @@
                         <div>
                         </div>
                     </div>
-                </div>
-                {{ $tasks->links('vendor.pagination.bootstrap-4') }}
+                    {{ $tasks->links('vendor.pagination.bootstrap-4') }}
 
+                </div>
             </div>
 
 </x-app-layout>

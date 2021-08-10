@@ -14,18 +14,18 @@
                         </ul>
                     </div><br />
                 @endif
-                <form method="post" action="{{ env('APP_URL') . '/api/create' }}">
+                <form method="post" action="{{ route('storeTask') }}">
                     @csrf
                     <div class="form-group">
                         <label for="title">Title:</label>
-                        <input type="text" class="form-control" name="title" />
+                        <input type="text" required class="form-control" name="title" />
                     </div>
 
                     <input type="hidden" name="user_id" value="{{ Auth::id() }}">
 
                     <div class="form-group">
                         <label for="subject">Subject</label>
-                        <input type="text" class="form-control" name="subject" />
+                        <input type="text" required class="form-control" name="subject" />
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Add task</button>

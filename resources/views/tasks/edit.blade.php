@@ -14,17 +14,18 @@
                 </div>
                 <br />
             @endif
-            <form method="post" action="{{ env('APP_URL') . '/api/update/' . $task->id }}">
+            <form method="post" action="{{ route('updateTask', $task->id) }}">
                 @csrf
+
                 <div class="form-group">
 
                     <label for="title">Title:</label>
-                    <input type="text" class="form-control" name="title" value={{ $task->title }} />
+                    <input type="text" required class="form-control" name="title" value={{ $task->title }} />
                 </div>
 
                 <div class="form-group">
                     <label for="subject">Subject:</label>
-                    <input type="text" class="form-control" name="subject" value={{ $task->subject }} />
+                    <input type="text" required class="form-control" name="subject" value={{ $task->subject }} />
                 </div>
                 <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                 <br>

@@ -1,10 +1,14 @@
-<div class="col-sm-12">
+<div class="container">
+    <div class="row justify-content-md-center mt-3 text-center">
+        <div class="col-sm-12">
 
-    @if (session()->get('success'))
-        <div class="alert alert-success">
-            {{ session()->get('success') }}
+            @if (session()->get('success'))
+                <div class="alert alert-success">
+                    {{ session()->get('success') }}
+                </div>
+            @endif
         </div>
-    @endif
+    </div>
 </div>
 
 @extends('base')
@@ -35,7 +39,7 @@
                                 <a href="{{ route('editTask', $task->id) }}" class="btn btn-primary">Edit</a>
                             </td>
                             <td>
-                                <form action="{{ env('APP_URL') . '/api/delete/' . $task->id }}" method="post">
+                                <form action="{{ route('destroyTask', $task->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger" type="submit">Delete</button>
